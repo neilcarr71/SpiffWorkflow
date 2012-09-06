@@ -2,12 +2,16 @@ from setuptools import setup, find_packages
 from os.path import dirname, join
 
 setup(name             = 'SpiffWorkflow',
-      version          = '0.3.0',
+      version          = '0.3.0-BPMN',
       description      = 'A workflow framework based on www.workflowpatterns.com',
       long_description = \
 """
 Spiff Workflow is a library implementing workflows in pure Python.
 It was designed to provide a clean API, and tries to be very easy to use.
+
+Spiff Workflow x.x.x-BPMN is a fork of the library that supports workflows
+built using BPMN 2.0. It is hoped that this fork will be merged in to
+the main framework at some stage.
 
 You can find a list of supported workflow patterns in the `README file`_
 included with the package.
