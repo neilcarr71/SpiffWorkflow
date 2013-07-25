@@ -251,7 +251,6 @@ class CompactWorkflowSerializer(Serializer):
     def _get_workflow_state(self, workflow):
         active_tasks = workflow.get_tasks(state=(Task.READY | Task.WAITING))
         states = []
-
         for task in active_tasks:
             transition = task.parent.task_spec.get_outgoing_sequence_flow_by_spec(task.task_spec).id
             w = task.workflow
@@ -260,7 +259,7 @@ class CompactWorkflowSerializer(Serializer):
                 workflow_parents.append(w.name)
                 w = w.outer_workflow
             state = ("W" if task.state == Task.WAITING else "R")
-            states.append([transition, workflow_parents, state])
+            states.append([transition, list(reversed(workflow_parents)), state])
 
         compacted_states = []
         for state in sorted(states, key=lambda s:",".join([s[0], s[2], (':'.join(s[1]))])):
@@ -289,7 +288,6 @@ class CompactWorkflowSerializer(Serializer):
             transition = state[0]
             workflow_parents = state[1] if len(state)>1 else []
             state = (Task.WAITING if len(state)>2 and state[2] == 'W' else Task.READY)
-
             s.add_path_to_transition(transition, state, workflow_parents)
 
         workflow._busy_with_restore = True
